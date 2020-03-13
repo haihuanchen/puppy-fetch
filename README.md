@@ -33,25 +33,29 @@ For each question, put your answer in the space provided. It is important every 
 1. In the space below, fill out the blanks to complete a fetch request to get all the dogs out of the database and print the response to the console.
 
 ```javascript
-fetch(_________)
-.then(_________)
-.then(console.log)
+ fetch('http://localhost:3000/puppies')
+  .then(resp => resp.json())
+  .then(json => console.log(json));
 ```
 
 2. In the request above, what does `fetch` return? 
 
 ```
+A promise, with a message of a string
 ```
 
 3. In the request above, what is `.then`? What does it return?
 
 ```
+A promise, with contains a JSON
 ```
 
 4. In the space below, provide the fetch request needed to get the dog with the id of 4 and print the response to the console.
 
 ```javascript
-
+ fetch('http://localhost:3000/puppies/4')
+  .then(resp => resp.json())
+  .then(json => console.log(json));
 ```
 
 5. How could you change the code above to print the following sentence to the console?
@@ -59,57 +63,120 @@ fetch(_________)
 >My dog is a {dog's breed} named {dog's name}. They are {dog's age} months old and they are pretty {dog's personality}.
 
 ```javascript
-
+ fetch('http://localhost:3000/puppies/4')
+  .then(resp => resp.json())
+  .then(json => console.log(`My dog is a ${json.breed} named ${json.name}. They are ${json.ageInMonths} months old and they are pretty ${json.personality}.`));
 ```
 
 6. Turns out we got one of the dog's breeds incorrect. Fill in the blanks below to change the breed for the dog with the id of 2 and then print the response to the console.
 
 ```javascript
-fetch("http://localhost:3000/_______", {
-  method: _______,
+fetch("http://localhost:3000/puppies/2", {
+  method: "PATCH",
   headers: {
-    _________: ________,
-    _________: ________
+      "Content-Type": "application/json",
+      "Accept": "application/json"
   },
-  body: JSON.stringify(_______)
+  body: JSON.stringify({'breed': "Mostly Beef"})
 })
-.then(________)
-.then(data => {
-  // your code here
+.then(function(response) {
+          console.log(response)
+          return response.json();
+        })
+.then(function(object) {
+      console.log(object)
+      return object;
 })
 ```
 
 7. What does `JSON.stringify` do in the fetch request above?
 
 ```
+Makes our body into a string
 ```
 
 8. Fill in the blanks below to add an entirely new dog to our database and then print the resoponse to the console.
 
 ```javascript
-fetch("_______", {
-  // your code here
+fetch("http://localhost:3000/puppies", {
+  method: "POST",
+  headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+  },
+  body: JSON.stringify({
+    "name": "John",
+    'breed': "Mostly Beef",
+    "ageInMonths": 23,
+    "personality": "Friendly",
+    "HTML_TO_SEND_TO_SITE": `<div>
+          <img alt='' src="{dog image}" />
+          <h2>{dog's name}</h2>
+          <p>{dog's breed}</p>
+          </div>`
+    })
 })
-.then(________)
-.then(data => {
-  // your code here
+.then(function(response) {
+          console.log(response)
+          return response.json();
+        })
+.then(function(object) {
+      console.log(object)
+      return object;
 })
 ```
 
 9. Alter the previous fetch request so that it renders the following HTML to the page after creating the new dog.
 
 ```html
-<div>
-  <img alt='' src="{dog image}" />
-  <h2>{dog's name}</h2>
-  <p>{dog's breed}</p>
-</div>
+fetch("http://localhost:3000/puppies", {
+  method: "POST",
+  headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+  },
+  body: JSON.stringify({
+    "name": "John",
+    'breed': "Mostly Beef",
+    "ageInMonths": 23,
+    "personality": "Friendly",
+    "HTML_TO_SEND_TO_SITE": `<div>
+          <img alt='' src="{dog image}" />
+          <h2>{dog's name}</h2>
+          <p>{dog's breed}</p>
+          </div>`
+    })
+})
+.then(function(response) {
+          console.log(response)
+          return response.json();
+        })
+.then(function(object) {
+      console.log(object)
+      return object;
+})
 ```
 
 10. Write a method named `removePuppy` that will delete a dog from the database when it is invoked.
 
 ```javascript
-
+function removePuppy(id_to_DELETE) {
+  fetch(`http://localhost:3000/puppies/${id_to_DELETE}`, {
+  method: "DELETE",
+  headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+  }
+})
+.then(function(response) {
+          console.log(response)
+          return response.json();
+        })
+.then(function(object) {
+      console.log(object)
+      return object;
+})
+}
 ```
 
 11. Write the javascript code to render the following form to the page. The user should be able to enter a dog id into the number field and when they click submit, the dog with that id should be removed from the database using the function your wrote above.
